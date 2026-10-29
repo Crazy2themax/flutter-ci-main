@@ -42,12 +42,24 @@ jobs:
       - name: Run unit and widget tests
         run: flutter test
 
-      - name: Build Android APK
-        run: flutter build apk --release
+      - name: Build the Android debug APK
+        run: |
+          chmod +x android/gradlew
+          flutter build apk --debug
 
-      - name: Upload APK
+      - name: Upload debug APK
         uses: actions/upload-artifact@v6
         with:
-          name: flutter-android-apk
+          name: flutter-android-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error
+
+      - name: Build Android release APK
+        run: flutter build apk --release
+
+      - name: Upload release APK
+        uses: actions/upload-artifact@v6
+        with:
+          name: flutter-android-release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
